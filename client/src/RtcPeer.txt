@@ -1,0 +1,50 @@
+const RtcPeer = () => {
+   let servers = {
+        'iceServers': [
+          {
+            'urls': 'stun:stun.l.google.com:19302'
+          },
+          {
+            'urls': 'turn:192.158.29.39:3478?transport=udp',
+            'credential': 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
+            'username': '28224511:1379330808'
+          },
+          {
+            'urls': 'turn:192.158.29.39:3478?transport=tcp',
+            'credential': 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
+            'username': '28224511:1379330808'
+          }
+        ]
+    }
+  let localPeerConnection;
+  localPeerConnection = new RTCPeerConnection(servers);
+  localPeerConnection.addEventListener("icecandidate", handleConnection);
+  localPeerConnection.addEventListener(
+    "iceconnectionstatechange",
+    handleConnectionChange
+  );
+  localPeerConnection.onicecandidate = handleConnection; // called when network candidates are available
+  localPeerConnection.oniceconnectionstatechange = handleConnectionChange;
+  function handleConnection(event) {
+    const peerConnection = event.target;
+    const iceCandidate = event.candidate;
+  
+    if (iceCandidate) {
+      const newIceCandidate = new RTCIceCandidate(iceCandidate);
+      const otherPeer = getOtherPeer(peerConnection);
+  
+      otherPeer.addIceCandidate(newIceCandidate)
+        .then(() => {
+          handleConnectionSuccess(peerConnection);
+        }).catch((error) => {
+          handleConnectionFailure(peerConnection, error);
+        });
+  
+      trace(`${getPeerName(peerConnection)} ICE candidate:\n` +
+            `${event.candidate.candidate}.`);
+    }
+  }
+
+  
+};
+export default RtcPeer;

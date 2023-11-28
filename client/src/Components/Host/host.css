@@ -1,0 +1,20 @@
+.getDevices {
+  display: flex;
+  flex-direction: column;
+  /* justify-content:space-between; */
+  align-items: center;
+}
+
+#localVideo {
+  margin-top: 1.5rem;
+  height: 360px;
+  width: 360px;
+  border: 0.5px solid rgb(20, 10, 10);
+}
+.videos {
+  display: flex;
+  flex-direction: column;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  align-items: center;
+}
